@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "나만의 단어장 저장기",
   "version": "1.0",
-  "permissions": ["contextMenus", "downloads"],
+  "permissions": ["contextMenus", "downloads", "storage"],
   "background": {
     "service_worker": "background.js"
   }
