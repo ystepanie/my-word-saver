@@ -1,5 +1,8 @@
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbzmRlAtWBiQrGc7ZFrvj0gf37I8zk1-da-9G7ymk1Q1suVOJrMWkRQxaYV9Ef05DjgV/exec";
+try {
+  importScripts('config.js');
+} catch (e) {
+  console.error("Failed to load config.js. Make sure to create it with WEB_APP_URL.");
+}
 
 // 우클릭 메뉴 생성
 chrome.runtime.onInstalled.addListener(() => {
