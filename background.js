@@ -1,7 +1,9 @@
 try {
-  importScripts('config.js');
+  importScripts("config.js");
 } catch (e) {
-  console.error("Failed to load config.js. Make sure to create it with WEB_APP_URL.");
+  console.error(
+    "Failed to load config.js. Make sure to create it with WEB_APP_URL.",
+  );
 }
 
 // 우클릭 메뉴 생성
@@ -34,38 +36,14 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
           method: "POST",
           mode: "no-cors", // 구글 앱스 스크립트 특성상 no-cors가 안정적일 때가 많습니다.
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "text/plain;charset=utf-8",
           },
           body: JSON.stringify({
             original: text,
             translated: translated,
-            date: date
-          })
+            date: date,
+          }),
         });
-
-        // 3. 로컬 저장 및 마크다운 다운로드 (백업용)
-        saveAndDownload(text, translated);
       });
   }
 });
-
-// 단어를 브라우저 저장소에 누적하고 파일로 다운로드
-async function saveAndDownload(original, translated) {
-  const result = await chrome.storage.local.get(["wordList"]);
-  const wordList = result.wordList || [];
-
-  const newEntry = `- **단어**: ${original}\n- **뜻**: ${translated}\n- **추가일**: ${new Date().toLocaleDateString()}\n\n---\n`;
-  wordList.push(newEntry);
-
-  await chrome.storage.local.set({ wordList });
-
-  const fullContent = wordList.join("");
-  const dataUrl = `data:text/markdown;charset=utf-8,${encodeURIComponent(fullContent)}`;
-
-  chrome.downloads.download({
-    url: dataUrl,
-    filename: "my_words.md",
-    conflictAction: "overwrite",
-    saveAs: false,
-  });
-}
